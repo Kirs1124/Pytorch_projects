@@ -48,6 +48,7 @@ def forward(x):
 
     return x
 
+
 # 选择优化器
 optimizer = optim.SGD([w1, b1, w2, b2, w3, b3], lr=learning_rate)
 # 选择目标优化损失函数
@@ -59,9 +60,9 @@ for epoch in range(epochs):
         logits = forward(data)
         loss = criteon(logits, target)
 
-        optimizer.zero_grad()   # 清零上一次的梯度信息
-        loss.backward()         # 后向传播，获取梯度信息
-        optimizer.step()        # 更新目标值
+        optimizer.zero_grad()  # 清零上一次的梯度信息
+        loss.backward()  # 后向传播，获取梯度信息
+        optimizer.step()  # 更新目标值
 
         if batch_idx % 100 == 0:
             print('Train Epoch:{} [{}/{} ({:.0f}%)]\tLoss:{:.6f}'.format(epoch, batch_idx * len(data),

@@ -1,0 +1,40 @@
+
+-- 查询统计1
+select course.cid,cname,ifnull(bad,0) bad,ifnull(common,0) common,ifnull(good,0) good,ifnull(best,0) best
+from course
+left join (
+select cid,count(*) bad from sc where score<60 group by cid
+) A on course.cid = A.cid
+left join (
+select cid,count(*) common from sc where score>=60 and score<=70 group by cid
+) B on  course.cid = B.cid
+left join(
+select cid,count(*) good from sc where score>70 and score<=85 group by cid
+) C on course.cid = C.cid
+left join (
+select cid,count(*) best from sc where score>85 and score<=100 group by cid
+) D on course.cid =D.cid 
+where tid = 2
+-- 查询统计2 及格率
+
+
+select A.cid,(
+select cname from course where A.cid = course.cid and tid = 1
+) cname,jgnum,allnum,round(jgnum/allnum,2)*100 jgl from (
+select cid, count(*) jgnum from sc where score>=60 group by cid 
+) A,(
+select cid, count(*) allnum from sc group by cid 
+) B where A.cid = B.cid 
+
+select * from course,(
+select A.cid,jgnum,allnum,round(jgnum/allnum,2)*100 jgl from (
+select cid, count(*) jgnum from sc where score>=60 group by cid 
+) A,(
+select cid, count(*) allnum from sc group by cid 
+) B where A.cid = B.cid) C where course.cid = C.cid 
+and tid = 1
+
+
+
+
+
